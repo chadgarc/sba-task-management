@@ -1,0 +1,17 @@
+@use 'colors';
+
+header{
+    background-color: colors.$dark-green;
+}
+
+.navbar{
+    position: sticky;
+    button{
+        width: 6rem;
+        background-color: colors.$brown;
+        color: white;
+        &:hover{
+            color: yellow;
+        }
+    }
+}

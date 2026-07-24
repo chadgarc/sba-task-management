@@ -1,1 +1,19 @@
-/*# sourceMappingURL=main.css.map */
+header {
+  background-color: #024950;
+}
+
+.navbar {
+  position: sticky;
+}
+.navbar button {
+  width: 6rem;
+  background-color: #964734;
+  color: white;
+}
+.navbar button:hover {
+  color: yellow;
+}
+
+body {
+  background-color: #0FA4AF;
+}/*# sourceMappingURL=main.css.map */
