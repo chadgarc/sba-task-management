@@ -1,21 +1,6 @@
 
-const status = ["Start", "In progress", "Completed", "Overdue"];
-
-const containerStructure = ["task-container", "taskTitle", "taskCategory", "taskDeadline", "progressBox", "task-progress-ball", "taskStatus"];
-
-const taskList = new Array();
-
-// I create my object constructor
-function task(taskTitle, category, deadline, status){
-    this.taskTitle = taskTitle;
-    this.category = category;
-    this.deadline = deadline;
-    this.status = status;
-}
-
-let tasks = new Array();
-
-function createTaskContainer(taskTitle, category, deadline){
+// This function will create a container with all my elements
+function createTaskContainer(taskTitle, category, deadline, status){
     
     // First I create a container
     const container = document.createElement("section");
@@ -25,6 +10,7 @@ function createTaskContainer(taskTitle, category, deadline){
     // I'll use the method classList and add because I want to add some bootstrap from
     // the beginning
     container.classList.add(containerStructure[0], "d-flex", "flex-column", "justify-content-center", "p-2", "rounded-3", "col-md-4", "col-12"); 
+    // All the following elements will go inside section container
 
     // The title of each task
     const title = document.createElement("h2");
@@ -52,9 +38,9 @@ function createTaskContainer(taskTitle, category, deadline){
     // This will create the status text
     const _status = document.createElement("p");
     _status.classList.add(containerStructure[6], "m-0");
-    _status.textContent = status[0];
+    _status.textContent = status;
 
-    // This is a box, where I'll store 
+    // This is a box, It will contain the progress status and a ball with color of the status
     statusBox.appendChild(statusBall);
     statusBox.appendChild(_status);
 
@@ -68,6 +54,20 @@ function createTaskContainer(taskTitle, category, deadline){
     main.appendChild(container);
 }
 
-// Demo
-createTaskContainer("Task 1", "Work", "Today");
-createTaskContainer("Task 2", "Class", "Yesterday");
+
+function listToContainers(filter = "Default", criteria = "Default"){
+    clearWebsite();
+    if(filter!=="Default"){
+        let filtered;
+        if(filter === "category"){
+            filtered = taskList.filter(targetTask => targetTask.category === criteria);
+        } else if (filter === "status") {
+            filtered = taskList.filter(targetTask => targetTask.status === criteria);
+        }
+        filtered.forEach(targetTask => 
+            createTaskContainer(targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
+    } else {
+        taskList.forEach(targetTask => 
+            createTaskContainer(targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
+    }
+}
