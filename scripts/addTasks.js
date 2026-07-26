@@ -12,7 +12,7 @@ function addTask(){
 
     const today = new Date();
     today.setHours(0, 0, 0, 0); // To avoid errors with time
-    if( targetDate < today ){
+    if( targetDate < today && currentStatus === status[0]){
         currentStatus = status[3];
     }
 
@@ -28,7 +28,7 @@ function addTask(){
         const modal = bootstrap.Modal.getInstance(document.getElementById("addTaskModal"));
         modal.hide();
         
-        resetModal();
+        resetAddModal();
     }
 }
 

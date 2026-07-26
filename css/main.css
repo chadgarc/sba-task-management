@@ -27,6 +27,7 @@ body {
   min-width: 18rem;
   max-width: 25rem;
   border: 0.125rem solid black;
+  box-shadow: 5px 5px black;
 }
 .task-container h2 {
   background-color: #964734;
@@ -37,9 +38,11 @@ body {
 }
 
 .task-progress-ball {
-  background-color: black;
   width: 1rem;
   height: 1rem;
+}
+.task-progress-ball.notStarted {
+  background-color: black;
 }
 .task-progress-ball.progress {
   background-color: orange;
@@ -49,4 +52,28 @@ body {
 }
 .task-progress-ball.overdue {
   background-color: red;
+}
+
+.dropdown-status {
+  text-decoration: none;
+  color: black;
+  padding: 0.625rem;
+  width: 100%;
+}
+.dropdown-status:hover {
+  background-color: royalblue;
+  color: white;
+  cursor: pointer;
+}
+
+.update-btn {
+  width: 7rem;
+  padding: 0.375rem 0.75rem;
+  font-weight: 800;
+  border-color: royalblue;
+  background-color: #964734;
+  color: white;
+}
+.update-btn.completed {
+  background-color: gray;
 }/*# sourceMappingURL=main.css.map */
