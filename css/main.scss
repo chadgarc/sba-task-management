@@ -6,5 +6,35 @@ body{
 }
 
 .task-container{
+    background-color: colors.$brown;
+    min-width: 18rem;
+    max-width: 25rem;
+    border: 0.125rem solid black;
+    h2{
+        background-color: colors.$brown;
+        border-radius: 0.3125rem 0.3125rem 0 0;
+    }
+    p, .progressBox{
+        background-color: colors.$lighter-green;
+    }
+}
+
+// This is how you control classes with sass
+.task-progress-ball {
+    background-color: black;
+    width: 1rem;
+    height: 1rem;
+    &.progress {
+        background-color: orange;
+    }
+    &.completed {
+        background-color: royalblue;
+    }
+    &.overdue {
+        background-color: red;
+    }
+}
+
+.content{
     
 }
