@@ -59,6 +59,7 @@ body{
     border-color: royalblue;
     background-color: colors.$brown;
     color: white;
+    margin-left: auto;
     &.completed{
         background-color: gray;
     }

@@ -73,6 +73,7 @@ body {
   border-color: royalblue;
   background-color: #964734;
   color: white;
+  margin-left: auto;
 }
 .update-btn.completed {
   background-color: gray;

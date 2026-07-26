@@ -89,7 +89,7 @@ function createTaskContainer(id, taskTitle, category, deadline, status){
 
     
     const update = document.createElement("button");
-    update.classList.add(containerStructure[7], "ms-3", "update-btn");
+    update.classList.add(containerStructure[7], "update-btn");
     if(status === "Not Started" || status === "Overdue"){
         update.textContent = "Start";
     } else if(status === "In Progress"){
@@ -117,15 +117,14 @@ function createTaskContainer(id, taskTitle, category, deadline, status){
 
 function addTask(){
     // Getting all values from input tags
-    const taskTitle = capitalize(document.getElementById("taskTitle").value);
-    const taskCategory = capitalize(document.getElementById("taskCategory").value);
+    const taskTitle = capitalize(document.getElementById("taskTitle").value.trim());
+    const taskCategory = capitalize(document.getElementById("taskCategory").value.trim());
     const taskDate = document.getElementById("taskDate").value;
     // I'll create an unique id to easily find my elements
     const id = taskList.length + 1;
 
     let finalStatus = currentStatus;
     
-
     // Convert input date WITHOUT UTC problems
     const [year, month, day] = taskDate.split("-");
     const targetDate = new Date(year, month - 1, day); // monthIndex starts at 0
@@ -139,6 +138,7 @@ function addTask(){
 
     if (!categories.includes(taskCategory)){
         categories.push(taskCategory);
+        renderCategoryRadios();
     }
 
     // I won't add anything if one field is empty
@@ -160,6 +160,50 @@ function addTask(){
 // =====================
 // List Rendering
 // =====================
+
+function renderCategoryRadios(){
+    // I'll get my filter container
+    const container = document.getElementById("status-filters");
+    
+    // Instance of all elements with cat-radio class
+    const oldCategories = container.querySelectorAll(".cat-radio");
+    // Removing all elements
+    oldCategories.forEach(element => element.remove());
+
+    // For each element from my list categories
+    categories.forEach(
+        cat => {
+            // I'll create an unique id, I'll split the values and join them with dash
+            // in case of spaces, id cannot have spaces
+            const id = `cat-${cat.split(" ").join("-")}`
+
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.id = id;
+            input.name = "groupFilter";
+            input.value = cat;
+            // This will allow me to call them later
+            input.classList.add("cat-radio");
+
+            // To add  my function call
+            input.setAttribute("onclick", `listToContainers('category','${cat}')`);
+
+            // Create labels
+            const label = document.createElement("label");
+            label.htmlFor = id;
+            label.textContent = cat;
+            label.classList.add("cat-radio");
+
+            const breakTag = document.createElement("br");
+            breakTag.classList.add("cat-radio");
+
+            // Add them
+            container.appendChild(input);
+            container.appendChild(label);
+            container.appendChild(breakTag);
+        }
+    )
+}
 
 function resetAddModal(){
         document.getElementById("taskTitle").value = "";
@@ -194,6 +238,9 @@ function listToContainers(filter = "Default", criteria = "Default"){
         taskList.forEach(targetTask => 
             createTaskContainer(targetTask.id, targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
     }
+
+    // To render categories
+    renderCategoryRadios();
 }
 
 function changeStatus(ID, Status){
@@ -215,16 +262,25 @@ function changeStatus(ID, Status){
 
 // Demo
 taskList.push(new task(1,"Task 1", "Math", "2026-07-28", "Not Started"));
+categories.push("Math");
 createTaskContainer(1, "Task 1", "Work", "2026-07-28","Not Started");
 
 taskList.push(new task(2,"Task 2", "Chemistry", "2026-07-30", "In Progress"));
+categories.push("Chemistry");
 createTaskContainer(2,"Task 2", "Chemistry", "2026-07-30", "In Progress");
 
 taskList.push(new task(3,"Task 3", "Biology", "2026-07-15", "Overdue"));
+categories.push("Biology");
 createTaskContainer(3, "Task 3", "Biology", "2026-07-15", "Overdue");
 
 taskList.push(new task(4,"Task 4", "Arts", "2026-07-13", "Completed"));
+categories.push("Arts");
 createTaskContainer(4, "Task 4", "Arts", "2026-07-13", "Completed");
+
+renderCategoryRadios();
+renderCategoryRadios();
+renderCategoryRadios();
+renderCategoryRadios();
 
 
 
