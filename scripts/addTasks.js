@@ -3,6 +3,7 @@ function addTask(){
     const taskTitle = capitalize(document.getElementById("taskTitle").value);
     const taskCategory = capitalize(document.getElementById("taskCategory").value);
     const taskDate = document.getElementById("taskDate").value;
+    const id = taskList.length + 1;
     
 
     // Convert input date WITHOUT UTC problems
@@ -19,16 +20,17 @@ function addTask(){
     // I won't add anything if one field is empty
     if( taskTitle !== "" && taskCategory !== "" && taskDate !== "" ){
         // Add object to list
-        taskList.push(new task(taskTitle, taskCategory, taskDate, currentStatus));
+        taskList.push(new task(id, taskTitle, taskCategory, taskDate, currentStatus));
 
         // Create container
-        createTaskContainer(taskTitle, taskCategory, taskDate, currentStatus);
+        createTaskContainer(id, taskTitle, taskCategory, taskDate, currentStatus);
 
         // Close modal
         const modal = bootstrap.Modal.getInstance(document.getElementById("addTaskModal"));
         modal.hide();
         
         resetAddModal();
+        currentStatus = status[0]; 
     }
 }
 

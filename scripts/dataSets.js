@@ -14,7 +14,8 @@ const containerStructure = ["task-container", "taskTitle", "taskCategory", "task
 const taskList = new Array();
 
 // I create my object constructor
-function task(taskTitle, category, deadline, status){
+function task(id, taskTitle, category, deadline, status){
+    this.id = id;
     this.taskTitle = taskTitle;
     this.category = category;
     this.deadline = deadline;

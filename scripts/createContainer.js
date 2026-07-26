@@ -1,8 +1,6 @@
 
 // This function will create a container with all my elements
-function createTaskContainer(taskTitle, category, deadline, status){
-    
-    const id = taskList.length + 1;
+function createTaskContainer(id, taskTitle, category, deadline, status){
 
     // First I create a container
     const container = document.createElement("section");
@@ -57,7 +55,7 @@ function createTaskContainer(taskTitle, category, deadline, status){
         // This will create the status text
         const update = document.createElement("button");
         update.classList.add(containerStructure[7], "ms-3", "update-btn");
-        if(status === "Not Started")
+        if(status === "Not Started" || status === "Overdue")
             update.textContent = "Start";
         else{
             update.textContent = "Complete";
@@ -90,10 +88,10 @@ function listToContainers(filter = "Default", criteria = "Default"){
             filtered = taskList.filter(targetTask => targetTask.status === criteria);
         }
         filtered.forEach(targetTask => 
-            createTaskContainer(targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
+            createTaskContainer(targetTask.id, targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
     } else {
         taskList.forEach(targetTask => 
-            createTaskContainer(targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
+            createTaskContainer(targetTask.id, targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
     }
 }
 
@@ -112,4 +110,5 @@ function changeStatus(ID, Status){
 }
 
 // Demo
-createTaskContainer("Task 1", "Work", "2026-07-28","Not Started");
+taskList.push(new task(1,"Task 1", "Work", "2026-07-28", "Not Started"));
+createTaskContainer(1, "Task 1", "Work", "2026-07-28","Not Started");

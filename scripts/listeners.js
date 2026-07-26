@@ -31,13 +31,19 @@ document.addEventListener(
 
             // If the button's text is complete I want it to get gray
             if (targetButton.textContent === "Start"){
+                // Change text content of button
                 targetButton.textContent = "Complete";
+                // Change color of ball
                 changeStatus(id, status[1]);
+                // Finding my object and then changing the status value of that object
+                // An then change the status text
+                taskList.find(t => t.id === Number(id)).status = status[1];
                 statText.textContent = status[1];
             } else {
                 targetButton.textContent = "Completed";
                 targetButton.classList.add("completed");
                 statText.textContent = status[2];
+                taskList.find(t => t.id === Number(id)).status = status[2];
                 changeStatus(id, status[2]);
             }
         }
