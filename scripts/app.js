@@ -3,6 +3,8 @@
 // Global Variables
 // =====================
 
+let nextId = 1;
+
 // I like having some strings I'm using in case I change my mind and I want to change the name
 // so I'll make it easier for me 
 const status = ["Not Started", "In Progress", "Completed", "Overdue"];
@@ -134,7 +136,7 @@ function addTask(){
     const taskCategory = capitalize(document.getElementById("taskCategory").value.trim());
     const taskDate = document.getElementById("taskDate").value;
     // I'll create an unique id to easily find my elements
-    const id = taskList.length + 1;
+    const id = nextId++;
 
     let finalStatus = currentStatus;
     
@@ -291,6 +293,8 @@ function loadSnapshot(){
         saved.forEach(t => taskList.push(t));
 
         rebuildCategories();
+         // Update nextId so it continues from the highest existing ID
+        nextId = Math.max(...taskList.map(t => t.id)) + 1;
     } else {
         demo();
     }
@@ -398,18 +402,22 @@ function demo(){
     taskList.push(new task(1,"Task 1", "Math", "2026-07-28", "Not Started"));
     categories.push("Math");
     createTaskContainer(1, "Task 1", "Math", "2026-07-28", "Not Started");
+    nextId++;
 
     taskList.push(new task(2,"Task 2", "Chemistry", "2026-07-30", "In Progress"));
     categories.push("Chemistry");
     createTaskContainer(2,"Task 2", "Chemistry", "2026-07-30", "In Progress");
+    nextId++;
 
     taskList.push(new task(3,"Task 3", "Biology", "2026-07-15", "Overdue"));
     categories.push("Biology");
     createTaskContainer(3, "Task 3", "Biology", "2026-07-15", "Overdue");
+    nextId++;
 
     taskList.push(new task(4,"Task 4", "Arts", "2026-07-13", "Completed"));
     categories.push("Arts");
     createTaskContainer(4, "Task 4", "Arts", "2026-07-13", "Completed");
+    nextId++;
 
     snapshot();
 }
