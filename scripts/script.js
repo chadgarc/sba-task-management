@@ -18,6 +18,9 @@ const taskList = new Array();
 
 const categories = new Array();
 
+// Load previous content if available
+loadSnapshot();
+
 // =====================
 // Utility Functions
 // =====================
@@ -50,11 +53,21 @@ function createTaskContainer(id, taskTitle, category, deadline, status){
     container.classList.add(containerStructure[0], "d-flex", "flex-column", "justify-content-center", "p-2", "rounded-3", "col-md-4", "col-12"); 
     // All the following elements will go inside section container
 
+    const titleDiv = document.createElement("div");
+    titleDiv.classList.add("d-flex", "justify-content-between", "titleDiv");
+    
+    const remove = document.createElement("button");
+    remove.classList.add("removeBttn");
+    remove.id = `del-${id}`;
+
     // The title of each task
     const title = document.createElement("h2");
-    title.classList.add(containerStructure[1], "text-center", "fw-bold", "text-white", "mb-0", "pt-2", "pb-2");
+    title.classList.add(containerStructure[1], "fw-bold", "text-white", "mb-0", "pt-2", "pb-2");
     title.textContent = taskTitle;
     title.id = `title-${id}`;
+
+    titleDiv.appendChild(title);
+    titleDiv.appendChild(remove);
     
     // Category for each task
     const _category = document.createElement("p");
@@ -87,7 +100,7 @@ function createTaskContainer(id, taskTitle, category, deadline, status){
     statusBox.appendChild(statusBall);
     statusBox.appendChild(_status);
 
-    
+    // This is the button used to update the status
     const update = document.createElement("button");
     update.classList.add(containerStructure[7], "update-btn");
     if(status === "Not Started" || status === "Overdue"){
@@ -102,7 +115,7 @@ function createTaskContainer(id, taskTitle, category, deadline, status){
     statusBox.appendChild(update);
     
 
-    container.appendChild(title);
+    container.appendChild(titleDiv);
     container.appendChild(_category);
     container.appendChild(_deadline);
     container.appendChild(statusBox);
@@ -152,7 +165,9 @@ function addTask(){
         // Close modal
         const modal = bootstrap.Modal.getInstance(document.getElementById("addTaskModal"));
         modal.hide();
-        
+
+        snapshot();
+
         resetAddModal();
     }
 }
@@ -181,12 +196,13 @@ function renderCategoryRadios(){
             input.type = "radio";
             input.id = id;
             input.name = "groupFilter";
-            input.value = cat;
             // This will allow me to call them later
             input.classList.add("cat-radio");
 
             // To add  my function call
             input.setAttribute("onclick", `listToContainers('category','${cat}')`);
+            // Aria
+            input.setAttribute("aria-label", `Filter tasks by category ${cat}`);
 
             // Create labels
             const label = document.createElement("label");
@@ -237,10 +253,15 @@ function listToContainers(filter = "Default", criteria = "Default"){
     } else {
         taskList.forEach(targetTask => 
             createTaskContainer(targetTask.id, targetTask.taskTitle, targetTask.category, targetTask.deadline, targetTask.status));
+
+            // To render categories
+            renderCategoryRadios();
+
+            // Uncheck filter radio
+            document.querySelectorAll("input[name='groupFilter']").forEach(r => r.checked = false);
     }
 
-    // To render categories
-    renderCategoryRadios();
+    
 }
 
 function changeStatus(ID, Status){
@@ -257,32 +278,23 @@ function changeStatus(ID, Status){
     }
 }
 
+// Saves or override data in local storage
+function snapshot(){
+    localStorage.setItem("taskList", JSON.stringify(taskList));
+}
 
+function loadSnapshot(){
+    const saved = JSON.parse(localStorage.getItem("taskList"));
 
+    if(saved){
+        taskList.length = 0;
+        saved.forEach(t => taskList.push(t));
 
-// Demo
-taskList.push(new task(1,"Task 1", "Math", "2026-07-28", "Not Started"));
-categories.push("Math");
-createTaskContainer(1, "Task 1", "Work", "2026-07-28","Not Started");
-
-taskList.push(new task(2,"Task 2", "Chemistry", "2026-07-30", "In Progress"));
-categories.push("Chemistry");
-createTaskContainer(2,"Task 2", "Chemistry", "2026-07-30", "In Progress");
-
-taskList.push(new task(3,"Task 3", "Biology", "2026-07-15", "Overdue"));
-categories.push("Biology");
-createTaskContainer(3, "Task 3", "Biology", "2026-07-15", "Overdue");
-
-taskList.push(new task(4,"Task 4", "Arts", "2026-07-13", "Completed"));
-categories.push("Arts");
-createTaskContainer(4, "Task 4", "Arts", "2026-07-13", "Completed");
-
-renderCategoryRadios();
-renderCategoryRadios();
-renderCategoryRadios();
-renderCategoryRadios();
-
-
+        rebuildCategories();
+    } else {
+        demo();
+    }
+}
 
 // =====================
 // Event Listeners
@@ -307,6 +319,7 @@ document.querySelectorAll(".dropdown-status").forEach(
     }
 );
 
+// Update button from task
 document.addEventListener(
     "click", (event) => {
         if (event.target.classList.contains("update-btn")) {
@@ -336,6 +349,71 @@ document.addEventListener(
                 taskList.find(t => t.id === Number(id)).status = status[2];
                 changeStatus(id, status[2]);
             }
+            snapshot();
         }
     }
 );
+
+// Detele task
+document.addEventListener(
+    "click", (event) => {
+        if (event.target.classList.contains("removeBttn")) {
+            // I want to get the ID, I can call specifics elements like that
+            const [, id] = event.target.id.split("-");
+            
+            // Rebuild taskList without the element deleted
+            const filtered = taskList.filter(t => t.id !== Number(id));
+            taskList.length = 0;
+            categories.length = 0;
+            filtered.forEach(t => taskList.push(t));
+
+            rebuildCategories();
+
+            snapshot();
+            listToContainers();
+            renderCategoryRadios();
+        }
+    }
+);
+
+function clearTasks(){
+    localStorage.clear();
+    taskList.length = 0;
+    categories.length = 0;
+    listToContainers();
+    renderCategoryRadios();
+}
+
+function rebuildCategories(){
+    categories.length = 0;
+    taskList.forEach(t => {
+            if( !categories.includes(t.category) ){
+                categories.push(t.category);
+            }
+        });
+}
+
+// Demo
+function demo(){
+    taskList.push(new task(1,"Task 1", "Math", "2026-07-28", "Not Started"));
+    categories.push("Math");
+    createTaskContainer(1, "Task 1", "Math", "2026-07-28", "Not Started");
+
+    taskList.push(new task(2,"Task 2", "Chemistry", "2026-07-30", "In Progress"));
+    categories.push("Chemistry");
+    createTaskContainer(2,"Task 2", "Chemistry", "2026-07-30", "In Progress");
+
+    taskList.push(new task(3,"Task 3", "Biology", "2026-07-15", "Overdue"));
+    categories.push("Biology");
+    createTaskContainer(3, "Task 3", "Biology", "2026-07-15", "Overdue");
+
+    taskList.push(new task(4,"Task 4", "Arts", "2026-07-13", "Completed"));
+    categories.push("Arts");
+    createTaskContainer(4, "Task 4", "Arts", "2026-07-13", "Completed");
+
+    snapshot();
+}
+
+listToContainers();
+
+renderCategoryRadios();

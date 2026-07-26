@@ -12,9 +12,16 @@ body{
     max-width: 25rem;
     border: 0.125rem solid black;
     box-shadow: 5px 5px black;
+    .removeBttn{
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 0.9375rem;
+        background-color: rgb(238, 255, 0);
+    }
     h2{
         background-color: colors.$brown;
         border-radius: 0.3125rem 0.3125rem 0 0;
+        margin-left: 1.5rem;
     }
     p, .progressBox{
         background-color: colors.$lighter-green;
@@ -62,5 +69,13 @@ body{
     margin-left: auto;
     &.completed{
         background-color: gray;
+        &:hover{
+            background-color: gray;
+            color: white;
+        }
+    }
+    &:hover{
+        color: yellow;
+        background-color: royalblue;
     }
 }

@@ -24,10 +24,12 @@
         <nav class="mb-2 d-flex justify-content-around gap-2
                     justify-content-sm-between navbar">
             <button class="btn btn-primary rounded-3"
-            data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+            data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Open filter menu">Filter</button>
+            
+            <button onclick="clearTasks()" class="btn btn-primary rounded-3" aria-label="Clear all tasks">Clear</button>
 
             <button id="addTask" class="btn btn-primary rounded-3 fw-bolder"
-            data-bs-toggle="modal" data-bs-target="#addTaskModal">Add</button>
+            data-bs-toggle="modal" data-bs-target="#addTaskModal" aria-label="Add new task">Add</button>
         </nav>
 
     </header>
@@ -39,7 +41,7 @@
     <!-- Modal pop-up for Add Task -->
     <!-- Coppied from bootstrap doc, and modified to correctly implement it to my HTML -->
 
-    <div class="modal fade" tabindex="-1" id="addTaskModal">
+    <div class="modal fade" tabindex="-1" id="addTaskModal" aria-labelledby="addTaskTitle" aria-modal="true" role="dialog">
         <!-- modeal dialog centered centers the box -->
         <div class="modal-dialog modal-dialog-centered">
 
@@ -47,7 +49,7 @@
 
                 <!-- Box Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Task</h5>
+                    <h5 class="modal-title" id="addTaskTitle">Add Task</h5>
                     <!-- Close button -->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -55,23 +57,24 @@
                 <!-- Here, we create the elements of the box -->
                 <div class="modal-body d-flex flex-column gap-2">
                     <label for="taskTitle">Enter Task Title: </label>
-                    <input type="text" id="taskTitle">
+                    <input type="text" id="taskTitle" aria-required="true">
 
                     <label for="taskCategory">Enter Task Category: </label>
-                    <input type="text" id="taskCategory">
+                    <input type="text" id="taskCategory" aria-required="true">
 
                     <label for="taskDate">Enter Date's Deadline: </label>
-                    <input type="date" id="taskDate">
+                    <input type="date" id="taskDate" aria-required="true">
 
                     <!-- Status Dropdown list -->
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="statusButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="statusButton" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="Select task status">
                             Not Started
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="statusButton">
-                            <li><a class="dropdown-item dropdown-status" data-status="Not Started">Not Started</a></li>
-                            <li><a class="dropdown-item dropdown-status" data-status="In Progress">In Progress</a></li>
-                            <li><a class="dropdown-item dropdown-status" data-status="Completed">Completed</a></li>
+                            <li><a class="dropdown-item dropdown-status" data-status="Not Started" aria-label="Set status to Not Started">Not Started</a></li>
+                            <li><a class="dropdown-item dropdown-status" data-status="In Progress" aria-label="Set status to In Progress">In Progress</a></li>
+                            <li><a class="dropdown-item dropdown-status" data-status="Completed" aria-label="Set status to Complete">Completed</a></li>
 
                         </ul>
                     </div>
@@ -88,7 +91,7 @@
 
     <!-- Modal pop-up for Filters -->
 
-    <div class="modal fade" tabindex="-1" id="filterModal">
+    <div class="modal fade" tabindex="-1" id="filterModal" aria-labelledby="filterTitle" aria-modal="true" role="dialog">
         <!-- modeal dialog centered centers the box -->
         <div class="modal-dialog modal-dialog-centered">
 
@@ -96,7 +99,7 @@
 
                 <!-- Box Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title">Filter</h5>
+                    <h5 class="modal-title" id="filterTitle">Filter</h5>
                     <!-- Close button -->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -107,16 +110,16 @@
                     <div id="status-filters">
                         <h3>Filter by Status</h3>
 
-                        <input onclick="listToContainers('status','Not Started')" type="radio" id="status-notstarted" name="groupFilter" value="Not Started">
+                        <input onclick="listToContainers('status','Not Started')" type="radio" id="status-notstarted" name="groupFilter">
                         <label for="status-notstarted">Not Started</label><br>
 
-                        <input onclick="listToContainers('status','In Progress')" type="radio" id="status-inprogress" name="groupFilter" value="In Progress">
+                        <input onclick="listToContainers('status','In Progress')" type="radio" id="status-inprogress" name="groupFilter">
                         <label for="status-inprogress">In Progress</label><br>
 
-                        <input onclick="listToContainers('status','Completed')" type="radio" id="status-completed" name="groupFilter" value="Completed">
+                        <input onclick="listToContainers('status','Completed')" type="radio" id="status-completed" name="groupFilter">
                         <label for="status-completed">Completed</label><br>
 
-                        <input onclick="listToContainers('status','Overdue')" type="radio" id="status-overdue" name="groupFilter" value="Overdue">
+                        <input onclick="listToContainers('status','Overdue')" type="radio" id="status-overdue" name="groupFilter">
                         <label for="status-overdue">Overdue</label><br>
                     
                         <h3>Filter by Category</h3>

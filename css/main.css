@@ -29,9 +29,16 @@ body {
   border: 0.125rem solid black;
   box-shadow: 5px 5px black;
 }
+.task-container .removeBttn {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.9375rem;
+  background-color: rgb(238, 255, 0);
+}
 .task-container h2 {
   background-color: #964734;
   border-radius: 0.3125rem 0.3125rem 0 0;
+  margin-left: 1.5rem;
 }
 .task-container p, .task-container .progressBox {
   background-color: #AFDDE5;
@@ -77,4 +84,12 @@ body {
 }
 .update-btn.completed {
   background-color: gray;
+}
+.update-btn.completed:hover {
+  background-color: gray;
+  color: white;
+}
+.update-btn:hover {
+  color: yellow;
+  background-color: royalblue;
 }/*# sourceMappingURL=main.css.map */
